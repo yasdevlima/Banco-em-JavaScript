@@ -1,0 +1,140 @@
+<html>
+
+<head>
+
+	<script>
+
+		var nome = prompt("Olá, por gentileza informe o seu nome:");
+		alert("Bem vinda(o) " + nome + "!");
+
+		var saldo = 100.5;
+		var extrato = [];
+		var senhaCorreta = "3589";
+		//Saldo, Extrato, Saque, Depósito, Transferência e Sair. 
+
+
+		function inicio() {
+			var senha = prompt('Por favor, informe sua senha para acessar as operações:');
+
+			if (senha === senhaCorreta) {
+				var escolha = parseInt(prompt('Selecione uma opção 1.) Saldo 2.) Extrato 3.) Saque 4.) Depósito 5.) Transferência 6.) Sair'));
+
+				switch (escolha) {
+					case 1:
+						ver_saldo();
+						break;
+					case 2:
+						ver_extrato();
+
+						break;
+					case 3:
+						fazer_saque();
+						break;
+					case 4:
+						fazer_deposito();
+						break;
+					case 5:
+						fazer_transferencia();
+						break;
+					case 6:
+						sair();
+						break;
+					default:
+						erro();
+				}
+			} else {
+				alert('Senha incorreta. Tente novamente.');
+				inicio();
+			}
+		}
+
+		function ver_saldo() {
+			alert('Seu saldo atual é: ' + saldo);
+			inicio();
+		}
+
+		function fazer_deposito() {
+			var deposito = parseFloat(prompt('Qual o valor para depósito?'));
+
+			if (isNaN(deposito) || deposito <= 0) {
+				alert('Por favor, informe um valor válido e maior que zero para depósito.');
+				fazer_deposito();
+			} else {
+				saldo += deposito;
+				extrato.push({ tipo: "Depósito", valor: deposito });
+				ver_saldo();
+			}
+		}
+
+		function fazer_saque() {
+			var saque = parseFloat(prompt('Qual o valor para saque?'));
+
+			if (isNaN(saque) || saque <= 0) {
+				alert('Por favor, informe um valor válido e maior que zero para saque.');
+				fazer_saque();
+			} else if (saque > saldo) {
+				alert("Operação não autorizada! Saldo insuficiente.");
+			} else {
+				saldo -= saque;
+				extrato.push({ tipo: "Saque", valor: saque });
+				ver_saldo();
+			}
+		}
+
+		function fazer_transferencia() {
+			var contaDestino = parseInt(prompt('Informe o número da conta de destino:'));
+
+			if (isNaN(contaDestino)) {
+				alert('Por favor, informe um número válido.');
+				fazer_transferencia();
+			} else {
+				var valorTransferencia = parseFloat(prompt('Qual o valor da transferência?'));
+				if (isNaN(valorTransferencia) || valorTransferencia <= 0) {
+					alert('Por favor, informe um valor válido e maior que zero para a transferência.');
+					fazer_transferencia();
+				} else if (valorTransferencia > saldo) {
+					alert("Operação não autorizada! Saldo insuficiente.");
+				} else {
+					saldo -= valorTransferencia;
+					extrato.push({ tipo: "Transferência para conta " + contaDestino, valor: valorTransferencia });
+					alert('Transferência realizada com sucesso para a conta ' + contaDestino + '.');
+					ver_saldo();
+				}
+			}
+		}
+
+		function ver_extrato() {
+			{
+				var extratoTexto = "Extrato:\n";
+				extrato.forEach(function (transacao, index) {
+					extratoTexto += (index + 1) + ". " + transacao.tipo + ": " + transacao.valor.toFixed(2) + "\n";
+				});
+				alert(extratoTexto);
+				inicio();
+			}
+
+		}
+
+		function erro() {
+			alert('Por favor, informe uma opção válida.');
+			inicio();
+		}
+
+		function sair() {
+			alert(nome + ", foi um prazer ter você por aqui!");
+			window.close();
+		}
+
+		inicio();
+
+
+
+
+	</script>
+</head>
+
+<body>
+
+</body>
+
+</html>
